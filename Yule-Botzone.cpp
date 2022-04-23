@@ -471,7 +471,7 @@ void miniMaxSelect(State &st, long long alpha, long long beta, int depth)
                 st.operation = opList.operations[i];
                 mtx.unlock();
             }
-            else if (tempValue == alpha && (srand((unsigned)time(nullptr)), rand() & 1))
+            else if (tempValue == alpha && (srand(static_cast<unsigned>(time(nullptr))), rand() & 1))
             {
                 mtx.lock();
                 st.operation = opList.operations[i];
@@ -499,7 +499,7 @@ void miniMaxSelect(State &st, long long alpha, long long beta, int depth)
                 st.operation = opList.operations[i];
                 mtx.unlock();
             }
-            else if (tempValue == beta && (srand((unsigned)time(nullptr)), rand() & 1))
+            else if (tempValue == beta && (srand(static_cast<unsigned>(time(nullptr))), rand() & 1))
             {
                 mtx.lock();
                 st.operation = opList.operations[i];

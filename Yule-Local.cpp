@@ -279,17 +279,17 @@ void miniMax(State &st, int64_t alpha, int64_t beta, int depth);
 
 int main()
 {
-    void *shareMemoryPointer;
-    void *fileMapPointer = OpenFileMapping(FILE_MAP_ALL_ACCESS, 0, MEMORY_NAME);
-    shareMemoryPointer = MapViewOfFile(fileMapPointer, FILE_MAP_ALL_ACCESS, 0, 0, 0);
-    unsigned long long *blackChessBoard = (unsigned long long *)shareMemoryPointer;
-    unsigned long long *whiteChessBoard = (unsigned long long *)shareMemoryPointer + 1;
-    signed char *startXInMemory = (signed char *)shareMemoryPointer + 16;
-    signed char *startYInMemory = (signed char *)shareMemoryPointer + 17;
-    signed char *destinationXInMemory = (signed char *)shareMemoryPointer + 18;
-    signed char *destinationYInMemory = (signed char *)shareMemoryPointer + 19;
-    signed char *player = (signed char *)shareMemoryPointer + 20;
-    signed char *state = (signed char *)shareMemoryPointer + 24;
+    char *shareMemoryPointer;
+    char *fileMapPointer = reinterpret_cast<char *>(OpenFileMapping(FILE_MAP_ALL_ACCESS, 0, MEMORY_NAME));
+    shareMemoryPointer = reinterpret_cast<char *>(MapViewOfFile(fileMapPointer, FILE_MAP_ALL_ACCESS, 0, 0, 0));
+    unsigned long long *blackChessBoard = reinterpret_cast<unsigned long long *>(shareMemoryPointer);
+    unsigned long long *whiteChessBoard = reinterpret_cast<unsigned long long *>(shareMemoryPointer + 1);
+    signed char *startXInMemory = reinterpret_cast<signed char *>(shareMemoryPointer + 16);
+    signed char *startYInMemory = reinterpret_cast<signed char *>(shareMemoryPointer + 17);
+    signed char *destinationXInMemory = reinterpret_cast<signed char *>(shareMemoryPointer + 18);
+    signed char *destinationYInMemory = reinterpret_cast<signed char *>(shareMemoryPointer + 19);
+    signed char *player = reinterpret_cast<signed char *>(shareMemoryPointer + 20);
+    signed char *state = reinterpret_cast<signed char *>(shareMemoryPointer + 24);
     ChessBoard mainCb;
     State ans;
     for (;;)
