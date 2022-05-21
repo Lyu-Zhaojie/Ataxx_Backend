@@ -1,20 +1,61 @@
+/**
+ * @file Greedy_Ataxx.c
+ * @author Lyu_Zhaojie
+ * @version V1.0
+ * @brief 使用贪心算法的同化棋AI
+ */
+
 #include <stdio.h>
 
 const int BLACK = 0, WHITE = 1;
+
+/**
+ * @brief 一个宏。用于关闭`source`的第`position`个二进制位。以最低位为第0位。
+ * @param source
+ * @param position
+ * @par Sample
+ * @code
+ *     int k = 12; // aka 0b1100
+ *     disableBit(k, 3);
+ *     assert(k == 4);
+ * @endcode
+ */
 #define disableBit(source, position) \
-    asm volatile("btr %1, %0;"       \
-                 : "+r"(source)      \
-                 : "r"(position))
+    __asm__ volatile("btr %1, %0;"   \
+                     : "+r"(source)  \
+                     : "r"(position))
 
+/**
+ * @brief 一个宏。用于计算`source`的二进制的尾随零个数
+ * @param source
+ * @param result
+ * @par Sample
+ * @code
+ *     int k = 24，res = 0; // k = 0b11000
+ *     countTrailingZero(k, res);
+ *     assert(res == 3);
+ * @endcode
+ */
 #define countTrailingZero(source, result) \
-    asm volatile("tzcnt %1, %0;"          \
-                 : "=r"(result)           \
-                 : "r"(source))
+    __asm__ volatile("tzcnt %1, %0;"      \
+                     : "=r"(result)       \
+                     : "r"(source))
 
+/**
+ * @brief 一个宏。用于计算`source`的二进制中`1`的个数
+ * @param `source`
+ * @param `result`
+ * @par Sample
+ * @code
+ *     int k = 24，res = 0; // k = 0b11000
+ *     populationCount(k, res);
+ *     assert(res == 2);
+ * @endcode
+ */
 #define populationCount(source, result) \
-    asm volatile("popcnt %1, %0;"       \
-                 : "=r"(result)         \
-                 : "r"(source))
+    __asm__ volatile("popcnt %1, %0;"   \
+                     : "=r"(result)     \
+                     : "r"(source))
 
 const unsigned long long MASK = 0x007f7f7f7f7f7f7f;
 const unsigned long long IN_RADIUS_1[64] = {
@@ -177,6 +218,10 @@ void move(ChessBoard *this, int start, int destination)
     this->table[this->player ^ 1] ^= change;
 }
 
+/**
+ * @brief 对当前棋盘估值。
+ * @param `this` :
+ */
 int evaluate(const ChessBoard *this)
 {
     long long black = 0, white = 0;
@@ -213,7 +258,7 @@ void initOperation_i32_i32_i32(Operation *this, int s, int des, int v)
 
 void search(const ChessBoard *chessBoard, Operation *answer);
 
-int main()
+int main(void)
 {
     ChessBoard mainChessBoard;
     initChessBoard(&mainChessBoard);
